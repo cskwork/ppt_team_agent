@@ -10,57 +10,66 @@
       height: 405pt;
       font-family: 'Pretendard', sans-serif;
       background: #0a0a0a;
-      position: relative;
-      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
     }
   </style>
 </head>
 <body>
-  <!-- 배경 이미지: 속도감 -->
-  <img src="https://images.unsplash.com/photo-1498084393753-b411b2d26b34?w=1400&q=80" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.35;" alt="Speed Motion">
-  <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,10,0.7) 0%, rgba(10,10,10,0.85) 50%, rgba(10,10,10,0.95) 100%);"></div>
+  <!-- 왼쪽: 이미지 -->
+  <div style="position: relative; overflow: hidden;">
+    <img src="https://images.unsplash.com/photo-1683009427041-d810728a7cb6?w=800&q=80" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7;" alt="Climbing Challenge">
+    <div style="position: absolute; inset: 0; background: linear-gradient(to right, transparent 60%, #0a0a0a 100%);"></div>
+    <div style="position: absolute; inset: 0; background: linear-gradient(to top, #0a0a0a 0%, transparent 40%);"></div>
 
-  <!-- 콘텐츠 -->
-  <div style="position: relative; z-index: 1; padding: 40pt 48pt; height: 100%; display: flex; flex-direction: column;">
+    <!-- 이미지 위 텍스트 -->
+    <div style="position: absolute; bottom: 32pt; left: 32pt;">
+      <p style="font-size: 10pt; color: rgba(255,255,255,0.5);">Photo: Unsplash</p>
+    </div>
+  </div>
+
+  <!-- 오른쪽: 콘텐츠 -->
+  <div style="padding: 40pt 40pt 40pt 20pt; display: flex; flex-direction: column;">
     <!-- 헤더 -->
-    <div style="display: flex; justify-content: center; margin-bottom: 20pt;">
-      <p style="display: inline-block; padding: 8pt 20pt; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: #fff; border-radius: 20pt; font-size: 10pt; font-weight: 600;">TURNING POINT</p>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24pt;">
+      <div style="display: flex; align-items: center; gap: 12pt;">
+        <p style="display: inline-block; padding: 6pt 12pt; background: #eab308; color: #000; border-radius: 6pt; font-size: 9pt; font-weight: 700;">PROBLEM 03</p>
+        <h2 style="font-size: 26pt; font-weight: 700; color: #ffffff;">난이도</h2>
+      </div>
+      <p style="font-size: 10pt; color: #666;">03</p>
     </div>
 
     <!-- 메인 콘텐츠 -->
-    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
-      <!-- 질문 -->
-      <p style="font-size: 42pt; font-weight: 800; color: #ffffff; letter-spacing: -0.02em; margin-bottom: 28pt;">
-        그래서 <span style="color: #ef4444;">안 쓸 건가?</span>
+    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+      <!-- 메인 텍스트 -->
+      <p style="font-size: 28pt; font-weight: 700; color: #ffffff; line-height: 1.4; margin-bottom: 20pt;">
+        "너무 쓰기 <span style="color: #eab308;">어려운</span> 것 같아"
       </p>
 
-      <!-- 현실 인식 박스 -->
-      <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); border-radius: 16pt; padding: 24pt 36pt; max-width: 520pt; backdrop-filter: blur(10px);">
-        <p style="font-size: 14pt; color: #a5b4fc; line-height: 1.8; margin-bottom: 16pt;">
-          Anthropic, Google, OpenAI... 빅테크들은<br>
-          이걸 써서 <span style="font-weight: 700; color: #ffffff;">생산성을 높이고 있다</span>
+      <p style="font-size: 16pt; color: #888; line-height: 1.6; margin-bottom: 28pt;">
+        터미널? 명령어?<br>
+        나는 GUI가 편한데...
+      </p>
+
+      <!-- 진입 장벽 요소들 -->
+      <div style="display: flex; flex-wrap: wrap; gap: 10pt;">
+        <p style="display: inline-block; padding: 10pt 16pt; background: rgba(234, 179, 8, 0.1); border: 1px solid rgba(234, 179, 8, 0.3); border-radius: 8pt; font-size: 12pt; color: #fbbf24;">
+          CLI 사용법
         </p>
-
-        <div style="height: 1pt; background: rgba(255,255,255,0.1); margin: 16pt 0;"></div>
-
-        <p style="font-size: 13pt; color: #888; line-height: 1.7;">
-          짧은 시간에 더 많은 걸 할 수 있고<br>
-          점점 그 속도는 <span style="color: #22c55e; font-weight: 600;">가속화</span>되고 있다
+        <p style="display: inline-block; padding: 10pt 16pt; background: rgba(234, 179, 8, 0.1); border: 1px solid rgba(234, 179, 8, 0.3); border-radius: 8pt; font-size: 12pt; color: #fbbf24;">
+          npm 설치
         </p>
-      </div>
-
-      <!-- 핵심 메시지 -->
-      <div style="margin-top: 28pt; padding: 18pt 28pt; background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(249, 115, 22, 0.2) 100%); border-radius: 12pt; border: 1px solid rgba(239, 68, 68, 0.3);">
-        <p style="font-size: 15pt; font-weight: 700; color: #ffffff;">
-          내가 안 하면, AI를 쓰는 사람이<br>
-          나보다 <span style="color: #fbbf24;">더 빨리 일하고 퇴근</span>할 것
+        <p style="display: inline-block; padding: 10pt 16pt; background: rgba(234, 179, 8, 0.1); border: 1px solid rgba(234, 179, 8, 0.3); border-radius: 8pt; font-size: 12pt; color: #fbbf24;">
+          설정 파일
         </p>
       </div>
     </div>
 
-    <!-- 페이지 번호 -->
-    <div style="text-align: right;">
-      <p style="font-size: 10pt; color: #666;">04</p>
+    <!-- 하단 -->
+    <div style="padding-top: 16pt; border-top: 1px solid #222;">
+      <p style="font-size: 11pt; color: #888;">
+        학습 비용 vs 생산성 향상 — 투자 대비 효과가 있을까?
+      </p>
     </div>
   </div>
 </body>
