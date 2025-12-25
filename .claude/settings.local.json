@@ -3,7 +3,9 @@
     "allow": [
       "Skill(design-skill)",
       "WebSearch",
-      "WebFetch(domain:unsplash.com)"
+      "WebFetch(domain:unsplash.com)",
+      "Skill(pptx-skill)",
+      "Bash(node:*)"
     ]
   }
 }
