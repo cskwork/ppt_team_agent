@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(design-skill)",
+      "WebSearch",
+      "WebFetch(domain:unsplash.com)"
+    ]
+  }
+}

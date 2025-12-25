@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendart.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 720pt;
+      height: 405pt;
+      font-family: 'Pretendard', sans-serif;
+      background: #0a0a0a;
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+    }
+  </style>
+</head>
+<body>
+  <!-- 왼쪽: 이미지 + 단계 -->
+  <div style="position: relative; padding: 36pt;">
+    <img src="https://images.unsplash.com/photo-1537432376769-00f5c2f4c8d2?w=800&q=80" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.2;" alt="Coding Setup">
+    <div style="position: absolute; inset: 0; background: linear-gradient(to right, rgba(10,10,10,0.8) 0%, rgba(10,10,10,0.95) 100%);"></div>
+
+    <div style="position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column;">
+      <!-- 헤더 -->
+      <div style="display: flex; align-items: center; gap: 10pt; margin-bottom: 24pt;">
+        <p style="display: inline-block; padding: 6pt 12pt; background: #22c55e; color: #000; border-radius: 6pt; font-size: 9pt; font-weight: 700;">SOLUTION 01</p>
+        <h2 style="font-size: 22pt; font-weight: 700; color: #ffffff;">난이도 해결</h2>
+      </div>
+
+      <!-- 단계별 가이드 -->
+      <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 16pt;">
+        <div style="background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.4); border-radius: 10pt; padding: 18pt;">
+          <div style="display: flex; align-items: center; gap: 12pt; margin-bottom: 10pt;">
+            <div style="width: 26pt; height: 26pt; background: #22c55e; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+              <p style="font-size: 13pt; font-weight: 700; color: #000;">1</p>
+            </div>
+            <p style="font-size: 15pt; font-weight: 600; color: #ffffff;">설치 후 기본 실행</p>
+          </div>
+          <p style="font-size: 11pt; color: #888; line-height: 1.5; padding-left: 38pt;">
+            npm install -g @anthropic-ai/claude-code
+          </p>
+        </div>
+
+        <div style="background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.4); border-radius: 10pt; padding: 18pt;">
+          <div style="display: flex; align-items: center; gap: 12pt; margin-bottom: 10pt;">
+            <div style="width: 26pt; height: 26pt; background: #22c55e; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+              <p style="font-size: 13pt; font-weight: 700; color: #000;">2</p>
+            </div>
+            <p style="font-size: 15pt; font-weight: 600; color: #ffffff;">MCP 연동</p>
+          </div>
+          <p style="font-size: 11pt; color: #888; line-height: 1.5; padding-left: 38pt;">
+            기존 도구들과 연결하여 확장
+          </p>
+        </div>
+      </div>
+
+      <!-- 시연 안내 -->
+      <div style="padding: 12pt; background: linear-gradient(90deg, rgba(34, 197, 94, 0.2) 0%, transparent 100%); border-radius: 8pt; border-left: 3pt solid #22c55e;">
+        <p style="font-size: 12pt; font-weight: 600; color: #22c55e;">🎬 시연 예정</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 오른쪽: MCP 도구들 -->
+  <div style="padding: 36pt 36pt 36pt 16pt; display: flex; flex-direction: column;">
+    <p style="font-size: 11pt; color: #22c55e; font-weight: 600; margin-bottom: 16pt;">MCP INTEGRATIONS</p>
+
+    <div style="flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 12pt; align-content: center;">
+      <div style="background: linear-gradient(135deg, #1a1a1a 0%, #222 100%); border-radius: 12pt; padding: 20pt; text-align: center; border: 1px solid #333;">
+        <p style="font-size: 28pt; margin-bottom: 10pt;">📋</p>
+        <p style="font-size: 14pt; font-weight: 600; color: #ffffff;">Jira</p>
+        <p style="font-size: 10pt; color: #666; margin-top: 4pt;">이슈 관리</p>
+      </div>
+      <div style="background: linear-gradient(135deg, #1a1a1a 0%, #222 100%); border-radius: 12pt; padding: 20pt; text-align: center; border: 1px solid #333;">
+        <p style="font-size: 28pt; margin-bottom: 10pt;">🧪</p>
+        <p style="font-size: 14pt; font-weight: 600; color: #ffffff;">Unit Test</p>
+        <p style="font-size: 10pt; color: #666; margin-top: 4pt;">테스트 자동화</p>
+      </div>
+      <div style="background: linear-gradient(135deg, #1a1a1a 0%, #222 100%); border-radius: 12pt; padding: 20pt; text-align: center; border: 1px solid #333;">
+        <p style="font-size: 28pt; margin-bottom: 10pt;">🔌</p>
+        <p style="font-size: 14pt; font-weight: 600; color: #ffffff;">Bruno</p>
+        <p style="font-size: 10pt; color: #666; margin-top: 4pt;">API 테스트</p>
+      </div>
+      <div style="background: linear-gradient(135deg, #1a1a1a 0%, #222 100%); border-radius: 12pt; padding: 20pt; text-align: center; border: 1px solid #333;">
+        <p style="font-size: 28pt; margin-bottom: 10pt;">🎨</p>
+        <p style="font-size: 14pt; font-weight: 600; color: #ffffff;">Figma</p>
+        <p style="font-size: 10pt; color: #666; margin-top: 4pt;">디자인 연동</p>
+      </div>
+    </div>
+
+    <p style="font-size: 10pt; color: #666; text-align: right;">05</p>
+  </div>
+</body>
+</html>
