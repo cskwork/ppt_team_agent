@@ -16,9 +16,32 @@ Every HTML slide must include proper body dimensions:
 
 ### Layout Dimensions
 
-- **16:9** (default): `width: 720pt; height: 405pt`
+- **16:9** (default): `width: 720pt; height: 405pt` → Use `pres.layout = 'LAYOUT_16x9'`
 - **4:3**: `width: 720pt; height: 540pt`
 - **16:10**: `width: 720pt; height: 450pt`
+
+### Preventing Content Overflow
+
+Content must fit within the slide dimensions. The converter validates this and reports overflow errors.
+
+**Recommended constraints to prevent overflow:**
+- Main content padding: `24-32pt` (avoid 40pt+)
+- Header margin-bottom: `14-20pt`
+- Card/section gaps: `10-14pt`
+- Card internal padding: `10-14pt`
+- Font sizes: body `10-14pt`, titles `22-36pt` (max `48pt` for hero)
+- Bottom margin: minimum `36pt` from slide edge
+
+**Example safe layout:**
+```html
+<div style="padding: 24pt 36pt; height: 100%; display: flex; flex-direction: column;">
+  <div style="margin-bottom: 14pt;">Header</div>
+  <div style="flex: 1; display: flex; flex-direction: column; gap: 10pt;">
+    Content cards with padding: 10-12pt
+  </div>
+  <div style="margin-top: 14pt;">Footer</div>
+</div>
+```
 
 ### Supported Elements
 
@@ -43,9 +66,14 @@ Every HTML slide must include proper body dimensions:
 
 **NEVER use manual bullet symbols (•, -, *, etc.)** - Use `<ul>` or `<ol>` lists instead
 
-**ONLY use web-safe fonts that are universally available:**
+**Font Compatibility:**
 - ✅ Web-safe fonts: `Arial`, `Helvetica`, `Times New Roman`, `Georgia`, `Courier New`, `Verdana`, `Tahoma`, `Trebuchet MS`, `Impact`, `Comic Sans MS`
-- ❌ Wrong: `'Segoe UI'`, `'SF Pro'`, `'Roboto'`, custom fonts - **Might cause rendering issues**
+- ✅ Korean web fonts are auto-mapped to system fonts:
+  - `Pretendard` → `Malgun Gothic`
+  - `Noto Sans KR` → `Malgun Gothic`
+  - `Nanum Gothic` → `Malgun Gothic`
+  - `Spoqa Han Sans` → `Malgun Gothic`
+- Web fonts not in the mapping list will use the first font family name
 
 ### Styling
 
@@ -59,11 +87,21 @@ Every HTML slide must include proper body dimensions:
 - Use hex colors with `#` prefix in CSS
 - **Text alignment**: Use CSS `text-align` (`center`, `right`, etc.) when needed as a hint to PptxGenJS for text formatting if text lengths are slightly off
 
-### Shape Styling (DIV elements only)
+### Shape Styling
 
-**IMPORTANT: Backgrounds, borders, and shadows only work on `<div>` elements, NOT on text elements (`<p>`, `<h1>`-`<h6>`, `<ul>`, `<ol>`)**
+**Background images on DIVs:**
+- `background-image: url()` on `<div>` elements is converted to `addImage()` calls
+- The image is positioned and sized based on the div's bounding box
+- Great for placing images within specific areas of the slide
 
-- **Backgrounds**: CSS `background` or `background-color` on `<div>` elements only
+**Text elements with backgrounds/borders:**
+- `<p>`, `<h1>`-`<h6>` with `background` or `border` are now supported
+- Converted to shape + text combination (shape rendered behind text)
+- Example: `<p style="background: #333; padding: 10pt; border-radius: 8pt;">Text</p>`
+
+**DIV shape styling:**
+
+- **Backgrounds**: CSS `background` or `background-color` on `<div>` elements
   - Example: `<div style="background: #f0f0f0;">` - Creates a shape with background
 - **Borders**: CSS `border` on `<div>` elements converts to PowerPoint shape borders
   - Supports uniform borders: `border: 2px solid #333333`
@@ -81,11 +119,15 @@ Every HTML slide must include proper body dimensions:
 
 ### Icons & Gradients
 
-- **CRITICAL: Never use CSS gradients (`linear-gradient`, `radial-gradient`)** - They don't convert to PowerPoint
-- **ALWAYS create gradient/icon PNGs FIRST using Sharp, then reference in HTML**
-- For gradients: Rasterize SVG to PNG background images
+**CSS Gradients (Supported with limitations):**
+- `linear-gradient` and `radial-gradient` on DIVs are converted to semi-transparent overlay shapes
+- The converter extracts the first `rgba()` color and uses it as a solid overlay
+- Complex multi-stop gradients become a single-color semi-transparent shape
+- For precise gradient effects, pre-render as PNG images
+
+**For complex gradients or icons:**
+- Rasterize SVG to PNG background images using Sharp
 - For icons: Rasterize react-icons SVG to PNG images
-- All visual effects must be pre-rendered as raster images before HTML rendering
 
 **Rasterizing Icons with Sharp:**
 
@@ -192,20 +234,21 @@ These libraries have been globally installed and are available to use:
 ### Basic Usage
 
 ```javascript
-const pptxgen = require('pptxgenjs');
-const html2pptx = require('./html2pptx');
+import PptxGenJS from 'pptxgenjs';
+import html2pptx from './.claude/skills/pptx-skill/scripts/html2pptx.js';
 
-const pptx = new pptxgen();
-pptx.layout = 'LAYOUT_16x9';  // Must match HTML body dimensions
+const pptx = new PptxGenJS();
+pptx.layout = 'LAYOUT_16x9';  // Must match HTML body dimensions (720pt x 405pt)
 
-const { slide, placeholders } = await html2pptx('slide1.html', pptx);
+// Convert with lenient mode (warnings instead of errors)
+const { slide, placeholders } = await html2pptx('slide1.html', pptx, { lenient: true });
 
 // Add chart to placeholder area
 if (placeholders.length > 0) {
     slide.addChart(pptx.charts.LINE, chartData, placeholders[0]);
 }
 
-await pptx.writeFile('output.pptx');
+await pptx.writeFile({ fileName: 'output.pptx' });
 ```
 
 ### API Reference
@@ -221,6 +264,7 @@ await html2pptx(htmlFile, pres, options)
 - `options` (object, optional):
   - `tmpDir` (string): Temporary directory for generated files (default: `process.env.TMPDIR || '/tmp'`)
   - `slide` (object): Existing slide to reuse (default: creates new slide)
+  - `lenient` (boolean): If true, print warnings instead of throwing errors for validation issues (default: false)
 
 #### Returns
 ```javascript
@@ -235,14 +279,20 @@ await html2pptx(htmlFile, pres, options)
 
 ### Validation
 
-The library automatically validates and collects all errors before throwing:
+The library automatically validates and collects all issues:
 
 1. **HTML dimensions must match presentation layout** - Reports dimension mismatches
 2. **Content must not overflow body** - Reports overflow with exact measurements
-3. **CSS gradients** - Reports unsupported gradient usage
-4. **Text element styling** - Reports backgrounds/borders/shadows on text elements (only allowed on divs)
+3. **Text box positioning** - Warns if text is too close to slide edges
 
-**All validation errors are collected and reported together** in a single error message, allowing you to fix all issues at once instead of one at a time.
+**Strict mode (default):** All validation errors are collected and thrown together.
+
+**Lenient mode (`{ lenient: true }`):** Validation issues are printed as warnings but conversion continues. Use this for production when you want to convert despite minor issues.
+
+```javascript
+// Lenient mode - warnings only
+await html2pptx('slide.html', pptx, { lenient: true });
+```
 
 ### Working with Placeholders
 

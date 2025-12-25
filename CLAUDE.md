@@ -112,20 +112,26 @@ Unsplash 이미지는 저작권 표시가 필수는 아니지만, 선택적으�
 ### 타이포그래피
 
 ```css
+/* HTML에서는 Pretendard 사용, PPTX 변환 시 자동으로 Malgun Gothic으로 매핑됨 */
 font-family: 'Pretendard', sans-serif;
 
 /* Hero Title */
-font-size: 42-72pt; font-weight: 800;
+font-size: 36-48pt; font-weight: 800;  /* 오버플로우 방지를 위해 최대 48pt 권장 */
 
 /* Section Title */
-font-size: 24-32pt; font-weight: 700;
+font-size: 22-28pt; font-weight: 700;
 
 /* Body */
-font-size: 12-16pt; font-weight: 400;
+font-size: 10-14pt; font-weight: 400;
 
 /* Caption */
-font-size: 9-11pt; font-weight: 400-500;
+font-size: 8-10pt; font-weight: 400-500;
 ```
+
+**폰트 호환성 (PPTX 변환 시)**
+- Pretendard → Malgun Gothic (맑은 고딕)
+- Noto Sans KR → Malgun Gothic
+- 웹 폰트는 PowerPoint에서 지원되지 않으므로 시스템 폰트로 자동 매핑됨
 
 ### 레이아웃 패턴
 
@@ -158,6 +164,65 @@ ppt_team_agent/
 4. **슬라이드 번호 일관성** - 2자리 숫자 형식 (01, 02, ...)
 5. **반응형 고려 없음** - 고정 크기 720pt x 405pt (16:9)
 6. **목차 슬라이드 필수** - 표지(slide-01) 다음에 반드시 목차(slide-02) 포함
+
+---
+
+## PPTX 변환 호환성 가이드
+
+### 레이아웃 제약사항
+
+**오버플로우 방지 필수**
+- 콘텐츠는 반드시 720pt x 405pt 내에 맞아야 함
+- 하단 여백 최소 36pt (0.5인치) 확보 권장
+- padding은 24-32pt 사용 (40pt 이상은 오버플로우 위험)
+
+```html
+<!-- 권장 콘텐츠 영역 패딩 -->
+<div style="padding: 24pt 36pt;">  <!-- 상하 24pt, 좌우 36pt -->
+```
+
+### 지원되는 기능
+
+| 기능 | HTML | PPTX 변환 결과 |
+|-----|------|---------------|
+| 배경 이미지 (body) | `background-image: url()` | 슬라이드 배경 |
+| 배경 이미지 (div) | `background-image: url()` | addImage()로 변환 |
+| CSS 그라데이션 오버레이 | `linear-gradient(rgba(...))` | 반투명 도형으로 변환 |
+| 텍스트 배경색 | `<p style="background:...">` | 도형 + 텍스트 조합 |
+| 테두리 | `border: 1px solid` | 도형 테두리 |
+| 둥근 모서리 | `border-radius` | rectRadius |
+| 이미지 | `<img src="">` | addImage() |
+| 불릿 리스트 | `<ul><li>` | 불릿 텍스트 |
+
+### 제한사항 및 대안
+
+| 제한 사항 | 대안 |
+|----------|-----|
+| 복잡한 그라데이션 | 단색 반투명 오버레이 사용 |
+| backdrop-filter | 지원 안됨 (시각적 효과만) |
+| box-shadow | 외부 그림자만 지원 |
+| 웹 폰트 | 시스템 폰트로 자동 매핑 |
+
+### 변환 명령어
+
+```bash
+# HTML → PPTX 변환 (lenient 모드로 경고만 출력)
+node convert.js
+
+# 결과물 위치
+output/presentation.pptx
+```
+
+### 오버플로우 체크리스트
+
+슬라이드 작성 시 다음을 확인:
+
+- [ ] 전체 콘텐츠 padding: 24-32pt
+- [ ] 헤더 margin-bottom: 14-20pt
+- [ ] 카드 간 gap: 10-14pt
+- [ ] 카드 내부 padding: 10-14pt
+- [ ] 폰트 크기: 본문 10-14pt, 제목 22-36pt
+- [ ] 하단에 최소 36pt 여백 확보
 
 ---
 

@@ -25,9 +25,9 @@
  *   { slide, placeholders } where placeholders is an array of { id, x, y, w, h }
  */
 
-const { chromium } = require('playwright');
-const path = require('path');
-const sharp = require('sharp');
+import { chromium } from 'playwright';
+import path from 'path';
+import sharp from 'sharp';
 
 const PT_PER_PX = 0.75;
 const PX_PER_IN = 96;
@@ -249,6 +249,23 @@ async function extractSlideData(page) {
     // Fonts that are single-weight and should not have bold applied
     // (applying bold causes PowerPoint to use faux bold which makes text wider)
     const SINGLE_WEIGHT_FONTS = ['impact'];
+
+    // Font mapping: web fonts to PowerPoint-safe system fonts
+    const FONT_MAP = {
+      'pretendard': 'Malgun Gothic',
+      'pretendard variable': 'Malgun Gothic',
+      'noto sans kr': 'Malgun Gothic',
+      'nanum gothic': 'Malgun Gothic',
+      'spoqa han sans': 'Malgun Gothic',
+      'spoqa han sans neo': 'Malgun Gothic',
+    };
+
+    // Helper: Map web fonts to system-safe fonts
+    const mapFont = (fontFamily) => {
+      if (!fontFamily) return 'Arial';
+      const normalizedFont = fontFamily.toLowerCase().replace(/['"]/g, '').split(',')[0].trim();
+      return FONT_MAP[normalizedFont] || fontFamily.split(',')[0].replace(/['"]/g, '').trim();
+    };
 
     // Helper: Check if a font should skip bold formatting
     const shouldSkipBold = (fontFamily) => {
@@ -495,13 +512,8 @@ async function extractSlideData(page) {
     // Collect validation errors
     const errors = [];
 
-    // Validate: Check for CSS gradients
-    if (bgImage && (bgImage.includes('linear-gradient') || bgImage.includes('radial-gradient'))) {
-      errors.push(
-        'CSS gradients are not supported. Use Sharp to rasterize gradients as PNG images first, ' +
-        'then reference with background-image: url(\'gradient.png\')'
-      );
-    }
+    // Handle CSS gradients on body - will be converted to overlay shape later
+    // (no longer throwing error, gradients are now supported as semi-transparent overlays)
 
     let background;
     if (bgImage && bgImage !== 'none') {
@@ -534,7 +546,8 @@ async function extractSlideData(page) {
     document.querySelectorAll('*').forEach((el) => {
       if (processed.has(el)) return;
 
-      // Validate text elements don't have backgrounds, borders, or shadows
+      // Handle text elements with backgrounds, borders, or shadows
+      // Convert them to shape + text combination
       if (textTags.includes(el.tagName)) {
         const computed = window.getComputedStyle(el);
         const hasBg = computed.backgroundColor && computed.backgroundColor !== 'rgba(0, 0, 0, 0)';
@@ -543,14 +556,34 @@ async function extractSlideData(page) {
                           (computed.borderRightWidth && parseFloat(computed.borderRightWidth) > 0) ||
                           (computed.borderBottomWidth && parseFloat(computed.borderBottomWidth) > 0) ||
                           (computed.borderLeftWidth && parseFloat(computed.borderLeftWidth) > 0);
-        const hasShadow = computed.boxShadow && computed.boxShadow !== 'none';
 
-        if (hasBg || hasBorder || hasShadow) {
-          errors.push(
-            `Text element <${el.tagName.toLowerCase()}> has ${hasBg ? 'background' : hasBorder ? 'border' : 'shadow'}. ` +
-            'Backgrounds, borders, and shadows are only supported on <div> elements, not text elements.'
-          );
-          return;
+        if (hasBg || hasBorder) {
+          const rect = el.getBoundingClientRect();
+          if (rect.width > 0 && rect.height > 0) {
+            // Add shape for background/border
+            const borderRadius = parseFloat(computed.borderRadius) || 0;
+            elements.push({
+              type: 'shape',
+              text: '',
+              position: {
+                x: pxToInch(rect.left),
+                y: pxToInch(rect.top),
+                w: pxToInch(rect.width),
+                h: pxToInch(rect.height)
+              },
+              shape: {
+                fill: hasBg ? rgbToHex(computed.backgroundColor) : null,
+                transparency: hasBg ? extractAlpha(computed.backgroundColor) : null,
+                line: hasBorder ? {
+                  color: rgbToHex(computed.borderColor),
+                  width: pxToPoints(computed.borderWidth)
+                } : null,
+                rectRadius: borderRadius > 0 ? borderRadius / PX_PER_IN : 0,
+                shadow: null
+              }
+            });
+          }
+          // Continue processing to add the text on top
         }
       }
 
@@ -612,14 +645,63 @@ async function extractSlideData(page) {
           }
         }
 
-        // Check for background images on shapes
+        // Handle background images on DIVs - convert to image elements
         const bgImage = computed.backgroundImage;
         if (bgImage && bgImage !== 'none') {
-          errors.push(
-            'Background images on DIV elements are not supported. ' +
-            'Use solid colors or borders for shapes, or use slide.addImage() in PptxGenJS to layer images.'
-          );
-          return;
+          const urlMatch = bgImage.match(/url\(["']?([^"')]+)["']?\)/);
+          if (urlMatch) {
+            const rect = el.getBoundingClientRect();
+            if (rect.width > 0 && rect.height > 0) {
+              elements.push({
+                type: 'image',
+                src: urlMatch[1],
+                position: {
+                  x: pxToInch(rect.left),
+                  y: pxToInch(rect.top),
+                  w: pxToInch(rect.width),
+                  h: pxToInch(rect.height)
+                }
+              });
+            }
+          }
+          // Check for gradient overlays - add semi-transparent shape
+          if (bgImage.includes('linear-gradient') || bgImage.includes('radial-gradient')) {
+            const rect = el.getBoundingClientRect();
+            if (rect.width > 0 && rect.height > 0) {
+              // Extract color from gradient for overlay (use dark overlay as fallback)
+              let overlayColor = '000000';
+              let overlayTransparency = 70; // 70% transparent = 30% visible
+
+              // Try to extract rgba from gradient
+              const rgbaMatch = bgImage.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
+              if (rgbaMatch) {
+                overlayColor = [rgbaMatch[1], rgbaMatch[2], rgbaMatch[3]]
+                  .map(n => parseInt(n).toString(16).padStart(2, '0')).join('');
+                if (rgbaMatch[4]) {
+                  overlayTransparency = Math.round((1 - parseFloat(rgbaMatch[4])) * 100);
+                }
+              }
+
+              elements.push({
+                type: 'shape',
+                text: '',
+                position: {
+                  x: pxToInch(rect.left),
+                  y: pxToInch(rect.top),
+                  w: pxToInch(rect.width),
+                  h: pxToInch(rect.height)
+                },
+                shape: {
+                  fill: overlayColor,
+                  transparency: overlayTransparency,
+                  line: null,
+                  rectRadius: 0,
+                  shadow: null
+                }
+              });
+            }
+          }
+          // Don't return - continue processing for borders/other properties
         }
 
         // Check for borders - both uniform and partial
@@ -781,7 +863,7 @@ async function extractSlideData(page) {
           },
           style: {
             fontSize: pxToPoints(computed.fontSize),
-            fontFace: computed.fontFamily.split(',')[0].replace(/['"]/g, '').trim(),
+            fontFace: mapFont(computed.fontFamily),
             color: rgbToHex(computed.color),
             transparency: extractAlpha(computed.color),
             align: computed.textAlign === 'start' ? 'left' : computed.textAlign,
@@ -820,7 +902,7 @@ async function extractSlideData(page) {
 
       const baseStyle = {
         fontSize: pxToPoints(computed.fontSize),
-        fontFace: computed.fontFamily.split(',')[0].replace(/['"]/g, '').trim(),
+        fontFace: mapFont(computed.fontFamily),
         color: rgbToHex(computed.color),
         align: computed.textAlign === 'start' ? 'left' : computed.textAlign,
         lineSpacing: pxToPoints(computed.lineHeight),
@@ -896,7 +978,8 @@ async function extractSlideData(page) {
 async function html2pptx(htmlFile, pres, options = {}) {
   const {
     tmpDir = process.env.TMPDIR || '/tmp',
-    slide = null
+    slide = null,
+    lenient = false
   } = options;
 
   try {
@@ -954,12 +1037,18 @@ async function html2pptx(htmlFile, pres, options = {}) {
       validationErrors.push(...slideData.errors);
     }
 
-    // Throw all errors at once if any exist
+    // Handle validation errors
     if (validationErrors.length > 0) {
-      const errorMessage = validationErrors.length === 1
-        ? validationErrors[0]
-        : `Multiple validation errors found:\n${validationErrors.map((e, i) => `  ${i + 1}. ${e}`).join('\n')}`;
-      throw new Error(errorMessage);
+      if (lenient) {
+        // In lenient mode, print warnings and continue
+        console.warn(`${htmlFile}: ${validationErrors.length} warning(s):`);
+        validationErrors.forEach((e, i) => console.warn(`  ${i + 1}. ${e}`));
+      } else {
+        const errorMessage = validationErrors.length === 1
+          ? validationErrors[0]
+          : `Multiple validation errors found:\n${validationErrors.map((e, i) => `  ${i + 1}. ${e}`).join('\n')}`;
+        throw new Error(errorMessage);
+      }
     }
 
     const targetSlide = slide || pres.addSlide();
@@ -976,4 +1065,4 @@ async function html2pptx(htmlFile, pres, options = {}) {
   }
 }
 
-module.exports = html2pptx;
+export default html2pptx;
