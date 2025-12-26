@@ -1,44 +1,44 @@
 ---
 name: pptx-skill
-description: HTML 슬라이드를 PowerPoint(PPTX) 파일로 변환. PPTX 생성, 편집, 썸네일 생성이 필요할 때 사용.
+description: Converts HTML slides to PowerPoint (PPTX) files. Use when PPTX creation, editing, or thumbnail generation is needed.
 ---
 
-# PPTX Skill - PowerPoint 변환 스킬
+# PPTX Skill - PowerPoint Conversion Skill
 
-HTML 슬라이드를 PowerPoint 프레젠테이션 파일로 변환하는 스킬입니다.
+A skill that converts HTML slides into PowerPoint presentation files.
 
-## 기능 개요
+## Feature Overview
 
-### 1. 새 프레젠테이션 생성 (HTML → PPTX)
-HTML 슬라이드 파일들을 PowerPoint로 변환
+### 1. Create New Presentation (HTML → PPTX)
+Convert HTML slide files to PowerPoint
 
-### 2. 기존 프레젠테이션 편집
-PPTX 파일의 내용 수정
+### 2. Edit Existing Presentation
+Modify content of PPTX files
 
-### 3. 썸네일 생성
-프레젠테이션의 미리보기 이미지 생성
+### 3. Generate Thumbnails
+Create preview images of presentations
 
-## 핵심 워크플로우
+## Core Workflow
 
-### HTML → PPTX 변환
+### HTML → PPTX Conversion
 
-1. **HTML 슬라이드 준비**
-   - `slides/` 디렉토리에 HTML 파일들 확인
-   - 각 파일이 720pt × 405pt (16:9) 규격인지 검증
+1. **Prepare HTML Slides**
+   - Verify HTML files exist in `slides/` directory
+   - Validate each file follows 720pt × 405pt (16:9) specification
 
-2. **html2pptx.js 실행**
+2. **Run html2pptx.js**
    ```bash
    node .claude/skills/pptx-skill/scripts/html2pptx.js
    ```
 
-3. **결과 검증**
-   - 생성된 PPTX 파일 확인
-   - 썸네일로 시각적 검증
+3. **Verify Results**
+   - Check generated PPTX file
+   - Visual verification via thumbnails
 
-## 스크립트 사용법
+## Script Usage
 
 ### html2pptx.js
-HTML 파일들을 PPTX로 변환
+Convert HTML files to PPTX
 
 ```javascript
 import { html2pptx } from './.claude/skills/pptx-skill/scripts/html2pptx.js';
@@ -47,65 +47,65 @@ import PptxGenJS from 'pptxgenjs';
 const pres = new PptxGenJS();
 pres.layout = 'LAYOUT_WIDE'; // 16:9
 
-// 각 슬라이드 변환
+// Convert each slide
 await html2pptx('slides/slide-01.html', pres);
 await html2pptx('slides/slide-02.html', pres);
 
-// 저장
+// Save
 await pres.writeFile({ fileName: 'presentation.pptx' });
 ```
 
 ### thumbnail.py
-프레젠테이션 썸네일 그리드 생성
+Generate presentation thumbnail grid
 
 ```bash
 python .claude/skills/pptx-skill/scripts/thumbnail.py presentation.pptx output-thumbnail
 ```
 
-옵션:
-- `--cols N`: 열 수 (기본 5, 범위 3-6)
-- `--outline-placeholders`: 플레이스홀더 영역 표시
+Options:
+- `--cols N`: Number of columns (default 5, range 3-6)
+- `--outline-placeholders`: Display placeholder areas
 
 ### pack.py / unpack.py
-PPTX 파일 패키징/언패키징
+PPTX file packaging/unpackaging
 
 ```bash
-# 언패킹
+# Unpack
 python .claude/skills/pptx-skill/ooxml/scripts/unpack.py presentation.pptx output_dir
 
-# 패킹
+# Pack
 python .claude/skills/pptx-skill/ooxml/scripts/pack.py input_dir presentation.pptx
 ```
 
 ### validate.py
-PPTX 구조 검증
+Validate PPTX structure
 
 ```bash
 python .claude/skills/pptx-skill/ooxml/scripts/validate.py unpacked_dir --original presentation.pptx
 ```
 
-## 상세 문서
+## Detailed Documentation
 
-- [html2pptx.md](html2pptx.md) - HTML to PPTX 변환 상세 가이드
-- [ooxml.md](ooxml.md) - Office Open XML 기술 참조
+- [html2pptx.md](html2pptx.md) - HTML to PPTX Conversion Detailed Guide
+- [ooxml.md](ooxml.md) - Office Open XML Technical Reference
 
-## PptxGenJS 핵심 규칙
+## PptxGenJS Core Rules
 
-### 색상 코드
+### Color Codes
 ```javascript
-// 올바른 사용 - # 없이
+// Correct usage - without #
 { color: 'FF0000' }
 
-// 잘못된 사용 - 파일 손상 유발
+// Incorrect usage - causes file corruption
 { color: '#FF0000' }
 ```
 
-### 슬라이드 추가
+### Adding Slides
 ```javascript
 const slide = pres.addSlide();
 
-// 텍스트 추가
-slide.addText('제목', {
+// Add text
+slide.addText('Title', {
   x: 0.5,
   y: 0.5,
   w: 9,
@@ -115,7 +115,7 @@ slide.addText('제목', {
   bold: true
 });
 
-// 이미지 추가
+// Add image
 slide.addImage({
   path: 'image.png',
   x: 1,
@@ -124,7 +124,7 @@ slide.addImage({
   h: 3
 });
 
-// 도형 추가
+// Add shape
 slide.addShape(pres.ShapeType.rect, {
   x: 0.5,
   y: 1,
@@ -134,12 +134,12 @@ slide.addShape(pres.ShapeType.rect, {
 });
 ```
 
-### 차트 추가
+### Adding Charts
 ```javascript
-// 막대 차트
+// Bar chart
 slide.addChart(pres.ChartType.bar, [
   {
-    name: '시리즈 1',
+    name: 'Series 1',
     labels: ['A', 'B', 'C'],
     values: [10, 20, 30]
   }
@@ -150,18 +150,18 @@ slide.addChart(pres.ChartType.bar, [
   h: 4
 });
 
-// 원형 차트
+// Pie chart
 slide.addChart(pres.ChartType.pie, [...], {...});
 
-// 선형 차트
+// Line chart
 slide.addChart(pres.ChartType.line, [...], {...});
 ```
 
-## 전체 변환 프로세스
+## Complete Conversion Process
 
 ```
 ┌─────────────────┐
-│   HTML 슬라이드  │
+│   HTML Slides   │
 │   slides/*.html │
 └────────┬────────┘
          │
@@ -174,7 +174,7 @@ slide.addChart(pres.ChartType.line, [...], {...});
          │
          ▼
 ┌─────────────────┐
-│   PPTX 파일     │
+│   PPTX File     │
 │ presentation.   │
 │     pptx        │
 └────────┬────────┘
@@ -182,30 +182,30 @@ slide.addChart(pres.ChartType.line, [...], {...});
          ▼
 ┌─────────────────┐
 │  thumbnail.py   │
-│  (미리보기)     │
+│   (Preview)     │
 └─────────────────┘
 ```
 
-## 의존성
+## Dependencies
 
 ### Node.js
-- pptxgenjs: PowerPoint 생성
-- playwright: 브라우저 렌더링
-- sharp: 이미지 처리
+- pptxgenjs: PowerPoint generation
+- playwright: Browser rendering
+- sharp: Image processing
 
 ### Python
-- markitdown: 마크다운 변환
-- defusedxml: XML 파싱
-- pillow: 이미지 처리
+- markitdown: Markdown conversion
+- defusedxml: XML parsing
+- pillow: Image processing
 
-### 시스템
-- LibreOffice: PDF/이미지 변환 (soffice)
-- Poppler: PDF 이미지화 (pdftoppm)
+### System
+- LibreOffice: PDF/image conversion (soffice)
+- Poppler: PDF to image (pdftoppm)
 
-## 주의사항
+## Important Notes
 
-1. **색상 코드**: PptxGenJS에서 # 접두사 사용 금지
-2. **폰트**: 웹 안전 폰트만 사용
-3. **텍스트**: p, h1-h6, ul, ol 태그만 변환됨
-4. **그라데이션**: CSS 그라데이션은 이미지로 대체
-5. **검증**: 변환 후 반드시 썸네일로 확인
+1. **Color Codes**: Do not use # prefix in PptxGenJS
+2. **Fonts**: Use only web-safe fonts
+3. **Text**: Only p, h1-h6, ul, ol tags are converted
+4. **Gradients**: CSS gradients are replaced with images
+5. **Verification**: Always verify with thumbnails after conversion

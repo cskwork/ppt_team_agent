@@ -6,7 +6,8 @@
       "WebFetch(domain:unsplash.com)",
       "Skill(pptx-skill)",
       "Bash(node:*)",
-      "WebFetch(domain:docs.anthropic.com)"
+      "WebFetch(domain:docs.anthropic.com)",
+      "Bash(git add:*)"
     ]
   }
 }
