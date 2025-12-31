@@ -33,6 +33,42 @@ const PT_PER_PX = 0.75;
 const PX_PER_IN = 96;
 const EMU_PER_IN = 914400;
 
+// Helper: Detect if text contains Korean characters (Hangul)
+const containsKorean = (text) => {
+  if (!text) return false;
+  return /[\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F]/.test(text);
+};
+
+// Helper: Calculate Korean text width multiplier
+// Korean characters are wider than Latin at same point size (~10-15%)
+// Bold Korean text adds additional width (~5%)
+const getKoreanWidthMultiplier = (text, fontWeight) => {
+  if (!text || !containsKorean(text)) return 1.0;
+
+  const koreanChars = (text.match(/[\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F]/g) || []).length;
+  const totalChars = text.length;
+  if (totalChars === 0) return 1.0;
+
+  const koreanRatio = koreanChars / totalChars;
+  let multiplier = 1.0 + (koreanRatio * 0.1);  // Base 10%
+
+  const weight = typeof fontWeight === 'string' ? parseInt(fontWeight) : fontWeight;
+  if (weight >= 600 || fontWeight === 'bold') {
+    multiplier += koreanRatio * 0.05;  // Bold +5%
+  }
+
+  return multiplier;
+};
+
+// Helper: Extract text content from element text structure
+const extractTextContent = (text) => {
+  if (typeof text === 'string') return text;
+  if (Array.isArray(text)) {
+    return text.map(t => t.text || '').join('');
+  }
+  return '';
+};
+
 // Helper: Get body dimensions and check for overflow
 async function getBodyDimensions(page) {
   const bodyDimensions = await page.evaluate(() => {
@@ -193,9 +229,14 @@ function addElements(slideData, targetSlide, pres) {
       let adjustedX = el.position.x;
       let adjustedW = el.position.w;
 
-      // Make single-line text 2% wider to account for underestimate
+      // Make single-line text wider to account for underestimate
+      // Korean text needs more adjustment (~10-15%) than Latin (~2%)
       if (isSingleLine) {
-        const widthIncrease = el.position.w * 0.02;
+        const textContent = extractTextContent(el.text);
+        const koreanMultiplier = getKoreanWidthMultiplier(textContent, el.style.bold ? 'bold' : 'normal');
+        // Base 2% for Latin, scaled by Korean multiplier (up to ~2.3% for pure Korean bold)
+        const widthIncreasePct = 0.02 * koreanMultiplier;
+        const widthIncrease = el.position.w * widthIncreasePct;
         const align = el.style.align;
 
         if (align === 'center') {
@@ -272,6 +313,38 @@ async function extractSlideData(page) {
       if (!fontFamily) return false;
       const normalizedFont = fontFamily.toLowerCase().replace(/['"]/g, '').split(',')[0].trim();
       return SINGLE_WEIGHT_FONTS.includes(normalizedFont);
+    };
+
+    // Helper: Detect if text contains Korean characters (Hangul)
+    const containsKorean = (text) => {
+      if (!text) return false;
+      // Hangul Unicode ranges: AC00-D7AF (syllables), 1100-11FF (jamo), 3130-318F (compatibility jamo)
+      return /[\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F]/.test(text);
+    };
+
+    // Helper: Calculate Korean text width multiplier
+    // Korean characters are wider than Latin at same point size (~10-15%)
+    // Bold Korean text adds additional width (~5%)
+    const getKoreanWidthMultiplier = (text, fontWeight) => {
+      if (!text || !containsKorean(text)) return 1.0;
+
+      // Count Korean vs non-Korean characters
+      const koreanChars = (text.match(/[\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F]/g) || []).length;
+      const totalChars = text.length;
+      if (totalChars === 0) return 1.0;
+
+      const koreanRatio = koreanChars / totalChars;
+
+      // Base multiplier for Korean: 1.1 (10% wider)
+      let multiplier = 1.0 + (koreanRatio * 0.1);
+
+      // Bold Korean adds another 5% (Malgun Gothic bold is wider)
+      const weight = typeof fontWeight === 'string' ? parseInt(fontWeight) : fontWeight;
+      if (weight >= 600 || fontWeight === 'bold') {
+        multiplier += koreanRatio * 0.05;
+      }
+
+      return multiplier;
     };
 
     // Unit conversion helpers

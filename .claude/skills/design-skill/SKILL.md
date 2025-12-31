@@ -100,6 +100,113 @@ line-height: 1;
 
 ---
 
+## Korean Typography (한글 타이포그래피)
+
+Korean text requires special consideration for optimal readability and visual balance.
+
+### Line Height for Korean
+CJK (Chinese, Japanese, Korean) text needs more generous line spacing than Latin text.
+
+| Text Type | Latin Default | Korean Recommended |
+|-----------|--------------|-------------------|
+| Hero Title | 1.1 | 1.2-1.3 |
+| Section Title | 1.2 | 1.3-1.4 |
+| Body Text | 1.6 | 1.7-1.9 |
+| Caption | 1.4 | 1.5-1.6 |
+
+```css
+/* Korean body text - recommended */
+line-height: 1.7;
+
+/* Korean titles */
+line-height: 1.3;
+```
+
+### Character Spacing (자간)
+Korean text looks better with tighter spacing than Latin defaults.
+
+```css
+/* Korean body text - slightly tighter */
+letter-spacing: -0.01em;
+
+/* Korean titles - tighter */
+letter-spacing: -0.02em;
+
+/* Korean hero titles - very tight */
+letter-spacing: -0.03em;
+```
+
+### Word Breaking (단어 줄바꿈)
+**ALWAYS use `word-break: keep-all` for Korean text containers** to prevent breaking within words.
+
+```css
+/* Required for all Korean text containers */
+word-break: keep-all;
+```
+
+### Maximum Character Guidelines
+
+Korean characters are ~10-15% wider than Latin at the same point size.
+
+| Box Width | Title (22-28pt) | Body (12-14pt) | Caption (9-10pt) |
+|-----------|----------------|----------------|------------------|
+| 200pt | 8-10자 | 14-16자 | 18-22자 |
+| 300pt | 12-15자 | 21-25자 | 28-33자 |
+| 400pt | 16-20자 | 28-33자 | 38-44자 |
+| 500pt | 20-25자 | 35-42자 | 48-55자 |
+| 624pt (full width - margins) | 25-31자 | 44-52자 | 58-68자 |
+
+**Calculation:** `max_chars = width_pt / (font_size_pt × 1.1)`
+
+### Font Size Adjustments
+Korean text appears slightly smaller than Latin at the same point size.
+
+| Purpose | Latin Size | Korean Recommended | Note |
+|---------|-----------|-------------------|------|
+| Hero Title | 72-96pt | 64-80pt | Reduce to prevent overflow |
+| Section Title | 48-60pt | 44-52pt | Slight reduction |
+| Slide Title | 32-40pt | 32-40pt | Same |
+| Body | 16-20pt | 16-20pt | Same |
+
+### Korean Layout Best Practices
+
+1. **Maximum 4 columns** for text-heavy Korean content (5+ columns too cramped)
+2. **Minimum font size: 10pt** (8pt is too small for Hangul)
+3. **Card padding: minimum 12pt** for Korean body text
+4. **Bold text needs 5% more width** (Malgun Gothic bold is wider)
+
+### Korean Slide Template Example
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 720pt;
+      height: 405pt;
+      font-family: 'Pretendard', sans-serif;
+      background: #0a0a0a;
+      padding: 40pt 48pt;
+    }
+  </style>
+</head>
+<body>
+  <div style="word-break: keep-all;">
+    <h1 style="font-size: 44pt; font-weight: 700; color: #ffffff; letter-spacing: -0.02em; line-height: 1.3;">
+      한글 제목 예시
+    </h1>
+    <p style="font-size: 16pt; color: #888; line-height: 1.7; margin-top: 20pt; letter-spacing: -0.01em;">
+      한글 본문 텍스트입니다. 적절한 행간과 자간을 설정하면 가독성이 크게 향상됩니다.
+    </p>
+  </div>
+</body>
+</html>
+```
+
+---
+
 ## Color Palette System
 
 ### 1. Executive Minimal (Default Recommended)

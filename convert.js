@@ -1,4 +1,5 @@
 import html2pptx from './.claude/skills/pptx-skill/scripts/html2pptx.js';
+import { validateKoreanSlide } from './.claude/skills/pptx-skill/scripts/validate-korean.js';
 import PptxGenJS from 'pptxgenjs';
 import fs from 'fs';
 import path from 'path';
@@ -20,6 +21,35 @@ async function main() {
   }
 
   console.log(`Found ${files.length} slides to convert...`);
+
+  // Korean text validation (pre-conversion check)
+  console.log('\n--- Korean Text Validation ---');
+  let totalWarnings = 0;
+  let totalErrors = 0;
+
+  for (const file of files) {
+    const filePath = path.join(slidesDir, file);
+    const { warnings, errors } = await validateKoreanSlide(filePath);
+
+    if (errors.length > 0 || warnings.length > 0) {
+      console.log(`\n${file}:`);
+      errors.forEach(e => {
+        console.log(`  [ERROR] ${e}`);
+        totalErrors++;
+      });
+      warnings.forEach(w => {
+        console.log(`  [WARN] ${w}`);
+        totalWarnings++;
+      });
+    }
+  }
+
+  if (totalErrors > 0 || totalWarnings > 0) {
+    console.log(`\nKorean validation: ${totalErrors} error(s), ${totalWarnings} warning(s)`);
+  } else {
+    console.log('Korean validation: All slides passed!');
+  }
+  console.log('--- End Validation ---\n');
 
   // Create presentation
   const pres = new PptxGenJS();
