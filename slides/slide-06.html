@@ -9,71 +9,89 @@
       width: 720pt;
       height: 405pt;
       font-family: 'Pretendard', sans-serif;
-      background: #0a0a0a;
-      position: relative;
-      overflow: hidden;
+      background: #0f0f0f;
+      padding: 32pt 48pt;
+      display: flex;
+      flex-direction: column;
     }
   </style>
 </head>
 <body>
-  <!-- 배경 이미지: 속도감 -->
-  <img src="https://images.unsplash.com/photo-1498084393753-b411b2d26b34?w=1400&q=80" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.35;" alt="Speed Motion">
-  <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,10,0.7) 0%, rgba(10,10,10,0.85) 50%, rgba(10,10,10,0.95) 100%);"></div>
+  <!-- Header -->
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20pt;">
+    <div style="display: flex; align-items: center; gap: 12pt;">
+      <p style="display: inline-block; padding: 4pt 10pt; background: #3b82f6; color: #fff; border-radius: 4pt; font-size: 8pt; font-weight: 600;">SECTION 04</p>
+      <h2 style="font-size: 22pt; font-weight: 600; color: #ffffff; word-break: keep-all;">핵심 기능</h2>
+    </div>
+    <p style="font-size: 10pt; color: #666;">06</p>
+  </div>
 
-  <!-- 콘텐츠 -->
-  <div style="position: relative; z-index: 1; padding: 28pt 40pt; height: 100%; display: flex; flex-direction: column;">
-    <!-- 헤더 -->
-    <div style="display: flex; justify-content: center; margin-bottom: 12pt;">
-      <p style="display: inline-block; padding: 8pt 20pt; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: #fff; border-radius: 20pt; font-size: 10pt; font-weight: 600;">TURNING POINT</p>
+  <!-- Feature Grid -->
+  <div style="flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); gap: 14pt;">
+    <!-- Feature 1 -->
+    <div style="background: linear-gradient(180deg, #1a1a1a 0%, #141414 100%); border-radius: 10pt; padding: 16pt; border: 1px solid rgba(255,255,255,0.08);">
+      <div style="display: flex; align-items: center; gap: 8pt; margin-bottom: 10pt;">
+        <div style="width: 28pt; height: 28pt; background: rgba(59,130,246,0.2); border-radius: 6pt; display: flex; align-items: center; justify-content: center;">
+          <p style="font-size: 12pt; color: #3b82f6;">01</p>
+        </div>
+        <h3 style="font-size: 12pt; font-weight: 600; color: #ffffff; word-break: keep-all;">적응형 학습 경로</h3>
+      </div>
+      <p style="font-size: 10pt; color: #888; line-height: 1.5; word-break: keep-all;">학습자 수준에 맞춰 자동으로 난이도와 순서가 조절되는 개인화된 커리큘럼</p>
     </div>
 
-    <!-- 메인 콘텐츠 -->
-    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
-      <!-- 질문 -->
-      <p style="font-size: 36pt; font-weight: 800; color: #ffffff; letter-spacing: -0.02em; margin-bottom: 16pt;">
-        그래서 <span style="color: #ef4444;">안 쓸 건가?</span>
-      </p>
-
-      <!-- 통계 카드 -->
-      <div style="display: flex; gap: 12pt; margin-bottom: 14pt;">
-        <div style="background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 10pt; padding: 12pt 16pt; text-align: center;">
-          <p style="font-size: 24pt; font-weight: 800; color: #a5b4fc;">92%</p>
-          <p style="font-size: 9pt; color: #a5b4fc;">Fortune 500</p>
-          <p style="font-size: 8pt; color: #666;">OpenAI 기술 사용</p>
+    <!-- Feature 2 -->
+    <div style="background: linear-gradient(180deg, #1a1a1a 0%, #141414 100%); border-radius: 10pt; padding: 16pt; border: 1px solid rgba(255,255,255,0.08);">
+      <div style="display: flex; align-items: center; gap: 8pt; margin-bottom: 10pt;">
+        <div style="width: 28pt; height: 28pt; background: rgba(34,197,94,0.2); border-radius: 6pt; display: flex; align-items: center; justify-content: center;">
+          <p style="font-size: 12pt; color: #22c55e;">02</p>
         </div>
-        <div style="background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 10pt; padding: 12pt 16pt; text-align: center;">
-          <p style="font-size: 24pt; font-weight: 800; color: #86efac;">55.8%</p>
-          <p style="font-size: 9pt; color: #86efac;">개발자 생산성</p>
-          <p style="font-size: 8pt; color: #666;">향상 (GitHub)</p>
-        </div>
-        <div style="background: rgba(251, 191, 36, 0.15); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 10pt; padding: 12pt 16pt; text-align: center;">
-          <p style="font-size: 24pt; font-weight: 800; color: #fcd34d;">2x</p>
-          <p style="font-size: 9pt; color: #fcd34d;">작업 완료 속도</p>
-          <p style="font-size: 8pt; color: #666;">McKinsey 2024</p>
-        </div>
+        <h3 style="font-size: 12pt; font-weight: 600; color: #ffffff; word-break: keep-all;">실시간 진단 평가</h3>
       </div>
-
-      <!-- 현실 인식 박스 -->
-      <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); border-radius: 10pt; padding: 12pt 24pt; max-width: 480pt; backdrop-filter: blur(10px);">
-        <p style="font-size: 11pt; color: #888; line-height: 1.6; text-align: center;">
-          빅테크들은 이미 AI로 <span style="color: #22c55e; font-weight: 600;">생산성을 높이고</span> 있고<br>
-          그 속도는 <span style="color: #a5b4fc;">점점 가속화</span>되고 있다
-        </p>
-      </div>
-
-      <!-- 핵심 메시지 -->
-      <div style="margin-top: 16pt; padding: 14pt 24pt; background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(249, 115, 22, 0.2) 100%); border-radius: 10pt; border: 1px solid rgba(239, 68, 68, 0.3);">
-        <p style="font-size: 13pt; font-weight: 700; color: #ffffff;">
-          내가 안 하면, AI를 쓰는 사람이<br>
-          나보다 <span style="color: #fbbf24;">더 빨리 일하고 퇴근</span>할 것
-        </p>
-      </div>
+      <p style="font-size: 10pt; color: #888; line-height: 1.5; word-break: keep-all;">학습 중 실시간으로 이해도를 측정하고 즉각적인 피드백 제공</p>
     </div>
 
-    <!-- 페이지 번호 및 출처 -->
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-      <p style="font-size: 8pt; color: #555;">Source: McKinsey, GitHub Research, Microsoft 2024</p>
-      <p style="font-size: 10pt; color: #666;">04</p>
+    <!-- Feature 3 -->
+    <div style="background: linear-gradient(180deg, #1a1a1a 0%, #141414 100%); border-radius: 10pt; padding: 16pt; border: 1px solid rgba(255,255,255,0.08);">
+      <div style="display: flex; align-items: center; gap: 8pt; margin-bottom: 10pt;">
+        <div style="width: 28pt; height: 28pt; background: rgba(168,85,247,0.2); border-radius: 6pt; display: flex; align-items: center; justify-content: center;">
+          <p style="font-size: 12pt; color: #a855f7;">03</p>
+        </div>
+        <h3 style="font-size: 12pt; font-weight: 600; color: #ffffff; word-break: keep-all;">AI 튜터 챗봇</h3>
+      </div>
+      <p style="font-size: 10pt; color: #888; line-height: 1.5; word-break: keep-all;">24/7 질의응답 지원과 개념 설명을 제공하는 대화형 AI 튜터</p>
+    </div>
+
+    <!-- Feature 4 -->
+    <div style="background: linear-gradient(180deg, #1a1a1a 0%, #141414 100%); border-radius: 10pt; padding: 16pt; border: 1px solid rgba(255,255,255,0.08);">
+      <div style="display: flex; align-items: center; gap: 8pt; margin-bottom: 10pt;">
+        <div style="width: 28pt; height: 28pt; background: rgba(236,72,153,0.2); border-radius: 6pt; display: flex; align-items: center; justify-content: center;">
+          <p style="font-size: 12pt; color: #ec4899;">04</p>
+        </div>
+        <h3 style="font-size: 12pt; font-weight: 600; color: #ffffff; word-break: keep-all;">학습 분석 대시보드</h3>
+      </div>
+      <p style="font-size: 10pt; color: #888; line-height: 1.5; word-break: keep-all;">학습자와 교사를 위한 상세한 진도 및 성취도 시각화</p>
+    </div>
+
+    <!-- Feature 5 -->
+    <div style="background: linear-gradient(180deg, #1a1a1a 0%, #141414 100%); border-radius: 10pt; padding: 16pt; border: 1px solid rgba(255,255,255,0.08);">
+      <div style="display: flex; align-items: center; gap: 8pt; margin-bottom: 10pt;">
+        <div style="width: 28pt; height: 28pt; background: rgba(249,115,22,0.2); border-radius: 6pt; display: flex; align-items: center; justify-content: center;">
+          <p style="font-size: 12pt; color: #f97316;">05</p>
+        </div>
+        <h3 style="font-size: 12pt; font-weight: 600; color: #ffffff; word-break: keep-all;">자동 콘텐츠 생성</h3>
+      </div>
+      <p style="font-size: 10pt; color: #888; line-height: 1.5; word-break: keep-all;">AI 기반 퀴즈, 요약, 연습문제 자동 생성으로 교사 업무 경감</p>
+    </div>
+
+    <!-- Feature 6 -->
+    <div style="background: linear-gradient(180deg, #1a1a1a 0%, #141414 100%); border-radius: 10pt; padding: 16pt; border: 1px solid rgba(255,255,255,0.08);">
+      <div style="display: flex; align-items: center; gap: 8pt; margin-bottom: 10pt;">
+        <div style="width: 28pt; height: 28pt; background: rgba(99,102,241,0.2); border-radius: 6pt; display: flex; align-items: center; justify-content: center;">
+          <p style="font-size: 12pt; color: #6366f1;">06</p>
+        </div>
+        <h3 style="font-size: 12pt; font-weight: 600; color: #ffffff; word-break: keep-all;">협업 학습 공간</h3>
+      </div>
+      <p style="font-size: 10pt; color: #888; line-height: 1.5; word-break: keep-all;">AI가 매칭한 학습 그룹과 프로젝트 기반 협업 환경</p>
     </div>
   </div>
 </body>

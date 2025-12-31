@@ -9,98 +9,64 @@
       width: 720pt;
       height: 405pt;
       font-family: 'Pretendard', sans-serif;
-      background: #0a0a0a;
+      background: #0f0f0f;
+      padding: 40pt 48pt;
       display: grid;
       grid-template-columns: 1fr 1.6fr;
+      gap: 48pt;
     }
   </style>
 </head>
 <body>
-  <!-- 왼쪽: 타이틀 -->
-  <div style="padding: 40pt; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid #222;">
+  <!-- Left: Title -->
+  <div style="display: flex; flex-direction: column; justify-content: space-between;">
     <div>
-      <div style="display: flex; align-items: center; gap: 8pt; margin-bottom: 16pt;">
-        <div style="width: 24pt; height: 24pt; background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%); border-radius: 5pt; display: flex; align-items: center; justify-content: center;">
-          <p style="color: #fff; font-size: 10pt; font-weight: 700; font-family: 'Consolas', monospace;">>_</p>
-        </div>
-        <p style="font-size: 10pt; font-weight: 600; color: #888;">Claude Code</p>
-      </div>
-    </div>
-
-    <div>
-      <h1 style="font-size: 36pt; font-weight: 700; color: #ffffff; letter-spacing: -0.02em; line-height: 1.2;">
+      <p style="font-size: 9pt; color: #666; margin-bottom: 20pt;">AI EDUCATION PLATFORM</p>
+      <h1 style="font-size: 42pt; font-weight: 600; color: #ffffff; letter-spacing: -0.02em; line-height: 1.15; word-break: keep-all;">
         목차
       </h1>
-      <p style="font-size: 12pt; color: #666; margin-top: 12pt;">
-        팀 도입을 위한 가이드
+      <p style="font-size: 13pt; color: #888; margin-top: 16pt; line-height: 1.6; word-break: keep-all;">
+        AI 기반 교육 플랫폼의<br>핵심 내용을 살펴봅니다
       </p>
     </div>
-
-    <div>
-      <p style="font-size: 9pt; color: #555;">Claude Code Introduction</p>
+    <div style="width: 32pt; height: 32pt; border: 1px solid #3b82f6; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+      <p style="font-size: 14pt; color: #3b82f6;">|</p>
     </div>
   </div>
 
-  <!-- 오른쪽: 목차 리스트 -->
-  <div style="padding: 36pt 40pt; display: flex; flex-direction: column; justify-content: center;">
-    <!-- Problems 섹션 -->
-    <div style="margin-bottom: 20pt;">
-      <div style="display: flex; align-items: center; gap: 10pt; margin-bottom: 12pt;">
-        <p style="display: inline-block; padding: 4pt 10pt; background: #ef4444; color: #fff; border-radius: 4pt; font-size: 8pt; font-weight: 700;">PROBLEMS</p>
-        <p style="font-size: 10pt; color: #666;">우려하는 점들</p>
-      </div>
-      <div style="display: flex; flex-direction: column; gap: 8pt; padding-left: 8pt; border-left: 2pt solid #333;">
-        <div style="display: flex; align-items: center; gap: 12pt;">
-          <p style="font-size: 12pt; color: #888; width: 16pt;">01</p>
-          <p style="font-size: 13pt; color: #ffffff; font-weight: 500;">할루시네이션</p>
-          <p style="font-size: 10pt; color: #ef4444;">— 결과물 품질 보장?</p>
-        </div>
-        <div style="display: flex; align-items: center; gap: 12pt;">
-          <p style="font-size: 12pt; color: #888; width: 16pt;">02</p>
-          <p style="font-size: 13pt; color: #ffffff; font-weight: 500;">보안 유출</p>
-          <p style="font-size: 10pt; color: #f97316;">— 코드가 외부로?</p>
-        </div>
-        <div style="display: flex; align-items: center; gap: 12pt;">
-          <p style="font-size: 12pt; color: #888; width: 16pt;">03</p>
-          <p style="font-size: 13pt; color: #ffffff; font-weight: 500;">난이도</p>
-          <p style="font-size: 10pt; color: #eab308;">— CLI 진입 장벽</p>
-        </div>
-      </div>
+  <!-- Right: Contents List -->
+  <div style="display: flex; flex-direction: column; justify-content: center; gap: 10pt;">
+    <div style="display: flex; align-items: center; gap: 14pt; padding: 10pt 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+      <p style="display: inline-block; padding: 4pt 10pt; background: #3b82f6; color: #fff; border-radius: 4pt; font-size: 8pt; font-weight: 600;">01</p>
+      <p style="flex: 1; font-size: 13pt; font-weight: 500; color: #ffffff; word-break: keep-all;">왜 AI 교육인가?</p>
     </div>
-
-    <!-- Turning Point -->
-    <div style="margin-bottom: 20pt;">
-      <div style="display: flex; align-items: center; gap: 10pt; margin-bottom: 12pt;">
-        <p style="display: inline-block; padding: 4pt 10pt; background: #6366f1; color: #fff; border-radius: 4pt; font-size: 8pt; font-weight: 700;">TURNING POINT</p>
-      </div>
-      <div style="padding-left: 8pt; border-left: 2pt solid #6366f1;">
-        <p style="font-size: 13pt; color: #a5b4fc; font-weight: 500;">그래서 안 쓸 건가?</p>
-      </div>
+    <div style="display: flex; align-items: center; gap: 14pt; padding: 10pt 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+      <p style="display: inline-block; padding: 4pt 10pt; background: #3b82f6; color: #fff; border-radius: 4pt; font-size: 8pt; font-weight: 600;">02</p>
+      <p style="flex: 1; font-size: 13pt; font-weight: 500; color: #ffffff; word-break: keep-all;">현재 교육의 한계</p>
     </div>
-
-    <!-- Solutions 섹션 -->
-    <div>
-      <div style="display: flex; align-items: center; gap: 10pt; margin-bottom: 12pt;">
-        <p style="display: inline-block; padding: 4pt 10pt; background: #22c55e; color: #000; border-radius: 4pt; font-size: 8pt; font-weight: 700;">SOLUTIONS</p>
-        <p style="font-size: 10pt; color: #666;">Claude Code로 해결</p>
-      </div>
-      <div style="display: flex; flex-direction: column; gap: 8pt; padding-left: 8pt; border-left: 2pt solid #22c55e;">
-        <div style="display: flex; align-items: center; gap: 12pt;">
-          <p style="font-size: 12pt; color: #888; width: 16pt;">01</p>
-          <p style="font-size: 13pt; color: #ffffff; font-weight: 500;">난이도 해결</p>
-          <p style="font-size: 10pt; color: #22c55e;">— 설치 & MCP</p>
-        </div>
-        <div style="display: flex; align-items: center; gap: 12pt;">
-          <p style="font-size: 12pt; color: #888; width: 16pt;">02</p>
-          <p style="font-size: 13pt; color: #ffffff; font-weight: 500;">보안 해결</p>
-          <p style="font-size: 10pt; color: #3b82f6;">— Permissions</p>
-        </div>
-        <div style="display: flex; align-items: center; gap: 12pt;">
-          <p style="font-size: 12pt; color: #888; width: 16pt;">03</p>
-          <p style="font-size: 13pt; color: #ffffff; font-weight: 500;">할루시네이션 해결</p>
-          <p style="font-size: 10pt; color: #a855f7;">— Plan & Context</p>
-        </div>
-      </div>
+    <div style="display: flex; align-items: center; gap: 14pt; padding: 10pt 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+      <p style="display: inline-block; padding: 4pt 10pt; background: #3b82f6; color: #fff; border-radius: 4pt; font-size: 8pt; font-weight: 600;">03</p>
+      <p style="flex: 1; font-size: 13pt; font-weight: 500; color: #ffffff; word-break: keep-all;">AI 기반 솔루션</p>
+    </div>
+    <div style="display: flex; align-items: center; gap: 14pt; padding: 10pt 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+      <p style="display: inline-block; padding: 4pt 10pt; background: #3b82f6; color: #fff; border-radius: 4pt; font-size: 8pt; font-weight: 600;">04</p>
+      <p style="flex: 1; font-size: 13pt; font-weight: 500; color: #ffffff; word-break: keep-all;">핵심 기능</p>
+    </div>
+    <div style="display: flex; align-items: center; gap: 14pt; padding: 10pt 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+      <p style="display: inline-block; padding: 4pt 10pt; background: #3b82f6; color: #fff; border-radius: 4pt; font-size: 8pt; font-weight: 600;">05</p>
+      <p style="flex: 1; font-size: 13pt; font-weight: 500; color: #ffffff; word-break: keep-all;">기술 아키텍처</p>
+    </div>
+    <div style="display: flex; align-items: center; gap: 14pt; padding: 10pt 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+      <p style="display: inline-block; padding: 4pt 10pt; background: #3b82f6; color: #fff; border-radius: 4pt; font-size: 8pt; font-weight: 600;">06</p>
+      <p style="flex: 1; font-size: 13pt; font-weight: 500; color: #ffffff; word-break: keep-all;">기대 효과</p>
+    </div>
+    <div style="display: flex; align-items: center; gap: 14pt; padding: 10pt 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+      <p style="display: inline-block; padding: 4pt 10pt; background: #3b82f6; color: #fff; border-radius: 4pt; font-size: 8pt; font-weight: 600;">07</p>
+      <p style="flex: 1; font-size: 13pt; font-weight: 500; color: #ffffff; word-break: keep-all;">구현 고려사항</p>
+    </div>
+    <div style="display: flex; align-items: center; gap: 14pt; padding: 10pt 0;">
+      <p style="display: inline-block; padding: 4pt 10pt; background: #3b82f6; color: #fff; border-radius: 4pt; font-size: 8pt; font-weight: 600;">08</p>
+      <p style="flex: 1; font-size: 13pt; font-weight: 500; color: #ffffff; word-break: keep-all;">결론</p>
     </div>
   </div>
 </body>
